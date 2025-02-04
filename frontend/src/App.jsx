@@ -7,10 +7,9 @@ function App() {
   // Función para obtener el saludo desde el backend
   const obtenerSaludo = async () => {
     try {
-      // Durante el desarrollo usas localhost; luego actualizarás esta URL con la del backend desplegado
       const response = await fetch('https://vilca-home.onrender.com/saludo');
       const data = await response.json();
-      setSaludo(`${data.mensaje} - ${data.time}`);
+      setSaludo(`${data.mensaje}`);
     } catch (error) {
       console.error('Error al obtener el saludo:', error);
       setSaludo('Error al conectar con el backend');
