@@ -1,41 +1,24 @@
 // backend/index.js
 const express = require('express');
 const cors = require('cors');
-const { Pool } = require('pg');
-require('dotenv').config(); // Carga las variables de entorno desde .env
-
+const path = require('path');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
-// Habilitar CORS para permitir peticiones del frontend
+// Habilitar CORS (útil para desarrollo o llamadas externas)
 app.use(cors());
 
-// Middleware para parsear JSON
-app.use(express.json());
-
-// Configurar la conexión a la base de datos PostgreSQL
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Esta variable la establecerás en Render
-  ssl: {
-    rejectUnauthorized: false
-  }
+// Ruta de ejemplo para el API
+app.get('/saludo', (req, res) => {
+  res.json({ mensaje: '¡Hola desde el backend!' });
 });
 
-// Endpoint para probar la conexión a la base de datos
-app.get('/saludo', async (req, res) => {
-  try {
-    // Ejemplo: obtenemos la hora actual desde la base de datos
-    const result = await pool.query('SELECT NOW()');
-    res.json({ mensaje: '¡Hola desde el backend con PostgreSQL!', time: result.rows[0].now });
-  } catch (error) {
-    console.error('Error al conectarse a la base de datos:', error);
-    res.status(500).json({ error: 'Error en la base de datos' });
-  }
-});
+// Servir archivos estáticos generados por el build del frontend
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-// Endpoint de prueba simple
-app.get('/', (req, res) => {
-  res.send('¡Hola mundo desde el backend!');
+// Redirigir cualquier otra ruta a index.html (para SPA)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
 });
 
 // Iniciar el servidor

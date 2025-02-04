@@ -8,7 +8,7 @@ function App() {
   const obtenerSaludo = async () => {
     try {
       // Durante el desarrollo usas localhost; luego actualizarás esta URL con la del backend desplegado
-      const response = await fetch('http://localhost:3000/saludo');
+      const response = await fetch('https://vilca-home.onrender.com/saludo');
       const data = await response.json();
       setSaludo(`${data.mensaje} - ${data.time}`);
     } catch (error) {
