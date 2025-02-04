@@ -1,11 +1,10 @@
 const pool = require('../db'); // Conexión a PostgreSQL
 
-// Obtener todas las habitaciones con su tipo
+// Obtener todas las habitaciones (sin JOIN, solo la tabla habitaciones)
 const obtenerHabitaciones = async () => {
   const result = await pool.query(`
-    SELECT h.id, h.nombre, h.descripcion, h.metros_cuadrados, t.nombre AS tipo 
-    FROM habitaciones h
-    JOIN tipos_habitaciones t ON h.tipo_id = t.id
+    SELECT id, nombre, descripcion, metros_cuadrados, tipo_id 
+    FROM habitaciones
   `);
   return result.rows;
 };
