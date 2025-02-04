@@ -5,7 +5,8 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 10000;
 const { Pool } = require('pg');
-
+const express = require('express');
+const { obtenerHabitaciones, crearHabitacion } = require('./models/Habitacion');
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_JXhD47cYQpLM@ep-holy-flower-a9dwddes-pooler.gwc.azure.neon.tech/neondb?sslmode=require',
   ssl: { rejectUnauthorized: false } // Importante para conexiones seguras
