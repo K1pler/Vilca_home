@@ -4,6 +4,16 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 10000;
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL || 'postgres://usuario:contraseña@servidor:puerto/nombre_db',
+  ssl: { rejectUnauthorized: false } // Necesario en Render
+});
+
+pool.connect()
+  .then(() => console.log('🔥 Conectado a PostgreSQL'))
+  .catch(error => console.error('❌ Error al conectar PostgreSQL:', error));
 
 // Habilitar CORS (útil para desarrollo o llamadas externas)
 app.use(cors());
