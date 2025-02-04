@@ -1,26 +1,16 @@
-// backend/index.js
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 10000;
-const { Pool } = require('pg');
-const { obtenerHabitaciones, crearHabitacion } = require('./models/Habitacion');
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_JXhD47cYQpLM@ep-holy-flower-a9dwddes-pooler.gwc.azure.neon.tech/neondb?sslmode=require',
-  ssl: { rejectUnauthorized: false } // Importante para conexiones seguras
-});
+const { obtenerHabitaciones } = require('./models/Habitacion');
+const pool = require('./db'); // Importar la conexión a PostgreSQL
 
-pool.connect()
-  .then(() => console.log('🔥 Conectado a PostgreSQL en Neon'))
-  .catch(error => console.error('❌ Error al conectar PostgreSQL:', error));
-
-module.exports = pool;
-
-// Habilitar CORS (útil para desarrollo o llamadas externas)
+// Habilitar CORS
 app.use(cors());
+app.use(express.json()); // Para manejar JSON en peticiones POST
 
-// Ruta de ejemplo para el API
+// Ruta de prueba
 app.get('/saludo', (req, res) => {
   res.json({ mensaje: '¡Hola desde el backend!' });
 });
@@ -38,12 +28,12 @@ app.get('/habitaciones', async (req, res) => {
 // Servir archivos estáticos generados por el build del frontend
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-// Redirigir cualquier otra ruta a index.html (para SPA)
+// Redirigir cualquier otra ruta a index.html (para SPA - Single Page Application)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
 });
 
 // Iniciar el servidor
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`🔥 Servidor corriendo en http://localhost:${PORT}`);
 });
