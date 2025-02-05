@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import HeroSection from "./components/HeroSection";
-import Footer from "./components/Footer";
-import DepartmentsSection from "./components/DepartmentsSection";
+import HeroSection from "../components/HeroSection";
+import Footer from "../components/Footer";
+import DepartmentsSection from "../components/DepartmentsSection";
 
 export default function App() {
   const [departments, setDepartments] = useState([]);
