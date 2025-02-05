@@ -1,28 +1,37 @@
-// frontend/src/App.jsx
-import { useState } from 'react';
+import { useEffect, useState } from "react";
+import HeroSection from "./components/HeroSection";
+import Footer from "./components/Footer";
+import DepartmentsSection from "./components/DepartmentsSection";
 
-function App() {
-  const [saludo, setSaludo] = useState('');
+export default function App() {
+  const [departments, setDepartments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Función para obtener el saludo desde el backend
-  const obtenerSaludo = async () => {
-    try {
-      const response = await fetch('https://vilca-home.onrender.com/saludo');
-      const data = await response.json();
-      setSaludo(`${data.mensaje}`);
-    } catch (error) {
-      console.error('Error al obtener el saludo:', error);
-      setSaludo('Error al conectar con el backend');
-    }
-  };
+  useEffect(() => {
+    fetch("https://vilca-home.onrender.com/habitaciones") // Reemplaza con la URL real de tu backend
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error en la respuesta del servidor");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setDepartments(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error al obtener departamentos:", error);
+        setError(error.message);
+        setLoading(false);
+      });
+  }, []);
 
   return (
-    <div className="App">
-      <h1>Prueba de Conexión</h1>
-      <button onClick={obtenerSaludo}>Obtener saludo</button>
-      {saludo && <p>{saludo}</p>}
+    <div className="bg-gray-100 min-h-screen">
+      <HeroSection />
+      <DepartmentsSection departments={departments} loading={loading} error={error} />
+      <Footer />
     </div>
   );
 }
-
-export default App;
