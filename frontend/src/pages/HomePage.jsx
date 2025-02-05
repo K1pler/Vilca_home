@@ -1,8 +1,8 @@
 // src/pages/HomePage.jsx
 import { useEffect, useState } from "react";
-import HeroSection from "../components/HeroSection";
-import DepartmentsSection from "../components/DepartmentsSection";
-import Footer from "../components/Footer";
+import HeroSection from "@/components/HeroSection";
+import DepartmentsSection from "@/components/DepartmentsSection";
+import Footer from "@/components/Footer";
 
 export default function HomePage() {
   const [departments, setDepartments] = useState([]);
