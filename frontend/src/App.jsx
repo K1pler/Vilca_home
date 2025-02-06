@@ -2,6 +2,7 @@
 import { Routes, Route, Link } from "react-router-dom";
 import HomePage from "@/pages/HomePage";
 import AboutPage from "@/pages/AboutPage";
+import Footer from "@/components/Footer"
 // Puedes agregar más páginas según necesites
 
 export default function App() {
