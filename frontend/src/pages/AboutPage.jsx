@@ -9,8 +9,6 @@ export default function AboutPage() {
         <h1 className="text-4xl font-bold text-center">Acerca de Nosotros</h1>
         <p className="text-center mt-4">Aquí va la información sobre nuestro proyecto.</p>
       </div>
-      {/* Solo se mantiene el Footer al final */}
-      <Footer />
     </div>
   );
 }
