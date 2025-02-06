@@ -36,7 +36,6 @@ export default function HomePage() {
         loading={loading} 
         error={error} 
       />
-      <Footer />
     </div>
   );
 }
