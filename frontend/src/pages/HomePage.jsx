@@ -1,40 +1,35 @@
-// src/pages/HomePage.jsx
-import { useEffect, useState } from "react";
-import HeroSection from "@/components/HeroSection";
-import DepartmentsSection from "@/components/DepartmentsSection";
+import HeroSection from '@/components/HeroSection'
+import DepartmentsSection from '@/components/DepartmentsSection'
+import { useQuery } from '@tanstack/react-query'
 
 export default function HomePage() {
-  const [departments, setDepartments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetch("https://vilca-home.onrender.com/habitaciones")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Error en la respuesta del servidor");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setDepartments(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error al obtener departamentos:", error);
-        setError(error.message);
-        setLoading(false);
-      });
-  }, []);
+  // 1. Función para hacer fetch de departamentos
+  const fetchDepartments = async () => {
+    const response = await fetch('https://vilca-home.onrender.com/habitaciones')
+    if (!response.ok) {
+      throw new Error('Error en la respuesta del servidor')
+    }
+    return response.json()
+  }
+
+  // 2. useQuery: automáticamente maneja loading, error y data
+  const {
+    data: departments,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(['departments'], fetchDepartments)
 
   return (
     <div>
       <HeroSection />
-      <DepartmentsSection 
-        departments={departments} 
-        loading={loading} 
-        error={error} 
+      <DepartmentsSection
+        // 3. Pasamos los datos al componente
+        departments={departments || []}
+        loading={isLoading}
+        error={isError ? error.message : null}
       />
     </div>
-  );
+  )
 }
